@@ -109,6 +109,8 @@ PRODUCT_PACKAGES += \
     power.tenderloin \
     librs_jni \
     wpa_supplicant.conf \
+    libmllite \
+    libmlplatform \
     sensors.tenderloin \
     lights.tenderloin \
     ts_srv \
