@@ -12,5 +12,6 @@ debug.sf.hw=1
 #debug.composition.type=cpu
 debug.enabletr=false
 debug.hwc.dynThreshold=1.9
+ro.bq.gpu_to_cpu_unsupported=1
 
 com.qc.hardware=true
