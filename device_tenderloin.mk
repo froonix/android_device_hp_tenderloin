@@ -123,7 +123,6 @@ PRODUCT_PACKAGES += \
     lights.tenderloin \
     ts_srv \
     ts_srv_set \
-    dosfsck \
     serial \
     com.android.future.usb.accessory \
     rebootcmd

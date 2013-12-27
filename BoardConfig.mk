@@ -108,9 +108,6 @@ TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/hp/tenderloin/releasetools/t
 BOARD_KERNEL_IMAGE_NAME := uImage
 BOARD_USES_UBOOT_MULTIIMAGE := true
 
-# use dosfsck from dosfstools
-BOARD_USES_CUSTOM_FSCK_MSDOS := true
-
 # kernel has no ext4_lazyinit
 # (esp. important for make_ext4fs in recovery)
 BOARD_NO_EXT4_LAZYINIT := true
