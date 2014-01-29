@@ -66,6 +66,10 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8660 \
     memtrack.msm8660
 
+# cam
+PRODUCT_PACKAGES += \
+    camera.tenderloin
+
 # QCOM Display
 PRODUCT_PACKAGES += \
     libgenlock \
