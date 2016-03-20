@@ -134,6 +134,9 @@ on boot
     write /proc/sys/vm/dirty_writeback_centisecs 60000
     write /proc/sys/vm/dirty_expire_centisecs 60000
 
+    # set low voltage point
+    write /sys/devices/i2c-3/3-0031/volt_low 3300000
+
     # Enable power collapse where always safe
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled 1
     write /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled 1
