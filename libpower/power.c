@@ -33,6 +33,12 @@
 #define BOOSTPULSE_INTERACTIVE "/sys/devices/system/cpu/cpufreq/interactive/boostpulse"
 //#define NOTIFY_ON_MIGRATE "/dev/cpuctl/apps/cpu.notify_on_migrate"
 
+#define LOW_POWER_MIN_FREQ "384000"
+#define LOW_POWER_MAX_FREQ "1026000"
+#define NORMAL_MAX_FREQ "1512000"
+
+static pthread_mutex_t power_lock = PTHREAD_MUTEX_INITIALIZER;
+
 #define TS_SOCKET_LOCATION "/dev/socket/tsdriver"
 #define TS_SOCKET_DEBUG 0
 
@@ -135,16 +141,30 @@ static void send_ts_socket(char *send_data) {
 
 static void tenderloin_power_set_interactive(struct power_module *module, int on)
 {
+    pthread_mutex_lock(&power_lock);
     /* tell touchscreen to turn on or off */
     if (on && ts_state == 0) {
-        ALOGI("Enabling touchscreen");
+        ALOGD("Enabling touchscreen...");
         ts_state = 1;
         send_ts_socket("O");
     } else if (!on && ts_state == 1) {
-        ALOGI("Disabling touchscreen");
+        ALOGD("Disabling touchscreen...");
         ts_state = 0;
         send_ts_socket("C");
     }
+
+    /* low power cpu settings */
+    if (on) {
+        ALOGD("Exiting low power mode...");
+        sysfs_write("/sys/devices/system/cpu/cpu1/online", "1");
+        sysfs_write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", NORMAL_MAX_FREQ);
+    } else {
+        ALOGD("Entering low power mode...");
+        sysfs_write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq", LOW_POWER_MIN_FREQ);
+        sysfs_write("/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq", LOW_POWER_MAX_FREQ);
+        sysfs_write("/sys/devices/system/cpu/cpu1/online", "0");
+    }
+    pthread_mutex_unlock(&power_lock);
 
     //sysfs_write(NOTIFY_ON_MIGRATE, on ? "1" : "0");
 }
