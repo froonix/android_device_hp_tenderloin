@@ -131,10 +131,6 @@ on boot
     chown audio audio /dev/input/event5
     chmod 0660 /dev/input/event5
 
-    # increase dirty_writeback_interval
-    write /proc/sys/vm/dirty_writeback_centisecs 60000
-    write /proc/sys/vm/dirty_expire_centisecs 60000
-
     # set low voltage point
     write /sys/devices/i2c-3/3-0031/volt_low 3300000
 
@@ -158,8 +154,9 @@ on boot
     chown root system /sys/devices/system/cpu/cpu1/online
     chmod 0664 /sys/devices/system/cpu/cpu1/online
 
+    write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
-    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1512000
 
     # allow Q6 bites to restart LPASS(Q6/audio) subsystem
     write /sys/module/subsystem_restart/parameters/restart_level 3
@@ -169,10 +166,10 @@ on boot
     insmod /system/lib/modules/cfg80211.ko
 
     # change permissions for i2c-2 device
-	chmod 0660 /dev/i2c-2
-	chown media media /dev/i2c-2
+    chmod 0660 /dev/i2c-2
+    chown media media /dev/i2c-2
 
-    # virtual sdcard daemon running as media_rw (1023)
+# virtual sdcard daemon running as media_rw (1023)
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
  
